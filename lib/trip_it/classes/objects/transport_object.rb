@@ -13,8 +13,8 @@ module TripIt
     def populate(source)
       info = source || @client.get("/transport", :id => @obj_id)["TransportObject"]
       super(info)
-      @segment   = Tripit::TransportSegment.new 
-      @traveler  = Tripit::Traveler.new 
+      @segment   = TripIt::TransportSegment.new 
+      @traveler  = TripIt::Traveler.new 
       chkAndPopulate(@segment, TripIt::TransportSegment, info["Segment"])
       chkAndPopulate(@traveler, TripIt::Traveler, info["Traveler"])
     end
