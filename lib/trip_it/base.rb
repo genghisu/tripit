@@ -74,11 +74,11 @@ module TripIt
         end
       end
       if self.class.name == "TripIt::TpDateTime"
-        xmlstr = "</DateTime>"
+        xmlstr << "</DateTime>"
       elsif self.class.name == "TripIt::TransportSegment"
-        xmlstr = "</Segment>"
+        xmlstr << "</Segment>"
       else
-        xmlstr = "</#{self.class.name.split("::").last}>"
+        xmlstr << "</#{self.class.name.split("::").last}>"
       end
     end
     
