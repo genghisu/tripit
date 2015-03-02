@@ -13,21 +13,10 @@ module TripIt
     def populate(source)
       info = source || @client.get("/transport", :id => @obj_id)["TransportObject"]
       super(info)
-      @segment   = []
-      @traveler  = []
+      @segment   = Tripit::TransportSegment.new 
+      @traveler  = Tripit::Traveler.new 
       chkAndPopulate(@segment, TripIt::TransportSegment, info["Segment"])
       chkAndPopulate(@traveler, TripIt::Traveler, info["Traveler"])
-    end
-    
-    def segment
-      @segment
-    end
-    def segment=(val)
-      if val.is_a?(Array) && val.all? { |e| TransportSegment === e }
-        @segment = val
-      else
-        raise ArgumentError, "Segment must be an Array of TransportSegments"
-      end
     end
     
     def sequence
