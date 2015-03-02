@@ -47,6 +47,8 @@ module TripIt
     def to_xml
       if self.class.name == "TripIt::TransportSegment"
         xmlstr = "<Segment>"
+      elsif self.class.name == "TripIt::TpDateTime"
+        xmlstr = ""
       else
         xmlstr = "<#{self.class.name.split("::").last}>"
       end
@@ -81,6 +83,8 @@ module TripIt
       end
       if self.class.name == "TripIt::TransportSegment"
         xmlstr << "</Segment>"
+      elsif self.class.name == "TripIt::TpDateTime"
+        #DO NOTHING
       else
         xmlstr << "</#{self.class.name.split("::").last}>"
       end
