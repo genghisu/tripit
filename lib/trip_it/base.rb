@@ -65,8 +65,13 @@ module TripIt
           xmlArr = value.map { |mem| mem.to_xml }
           xmlstr << "<#{camelize(key[1..-1])}>#{xmlArr}</#{camelize(key[1..-1])}>"
         elsif value.class.name.split("::").first == "TripIt"
-          # If it's a single one of our objects, call its to_xml method
-          xmlstr << value.to_xml
+          if key=~/start_location_address/
+            xmlstr << value.to_xml("StartLocationAddress")
+          elsif key=~/end_location_address/
+            xmlstr << value.to_xml("EndLocationAddress")
+          else
+            xmlstr << value.to_xml
+          end
         elsif key=~/date_/
           if key=~/start_date_time/
             xmlstr << TripIt::TpDateTime.new(value).to_xml("StartDateTime")
@@ -74,14 +79,6 @@ module TripIt
             xmlstr << TripIt::TpDateTime.new(value).to_xml("EndDateTime")
           else
             xmlstr << TripIt::TpDateTime.new(value).to_xml
-          end
-        elsif key=~/location_address/
-          if key=~/start_location_address/
-            xmlstr << TripIt::Address.new(value).to_xml("StartLocationAddress")
-          elsif key=~/end_location_address/
-            xmlstr << TripIt::Address.new(value).to_xml("EndLocationAddress")
-          else
-            xmlstr << value.to_xml
           end
         else
           xmlstr << "<#{key[1..-1]}>#{value}</#{key[1..-1]}>"
