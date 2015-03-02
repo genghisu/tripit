@@ -75,6 +75,14 @@ module TripIt
           else
             xmlstr << TripIt::TpDateTime.new(value).to_xml
           end
+        elsif key=~/location_address/
+          if key=~/start_location_address/
+            xmlstr << TripIt::Address.new(value).to_xml("StartLocationAddress")
+          elsif key=~/end_location_address/
+            xmlstr << TripIt::Address.new(value).to_xml("EndLocationAddress")
+          else
+            xmlstr << value.to_xml
+          end
         else
           xmlstr << "<#{key[1..-1]}>#{value}</#{key[1..-1]}>"
         end
