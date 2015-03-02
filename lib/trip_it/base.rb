@@ -66,7 +66,15 @@ module TripIt
           # If it's a single one of our objects, call its to_xml method
           xmlstr << value.to_xml
         elsif key=~/date_/
-          xmlstr << TripIt::TpDateTime.new(value).to_xml
+          if key=~/start_date_time/
+            inner = TripIt::TpDateTime.new(value).to_xml
+            xmlstr << "<StartDateTime>#{inner}</StartDateTime>"
+          elsif key=~/end_date_time/
+            inner = TripIt::TpDateTime.new(value).to_xml
+            xmlstr << "<EndDateTime>#{inner}</EndDateTime>"
+          else
+            xmlstr << TripIt::TpDateTime.new(value).to_xml
+          end
         else
           xmlstr << "<#{key[1..-1]}>#{value}</#{key[1..-1]}>"
         end
