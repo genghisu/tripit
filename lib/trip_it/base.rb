@@ -27,6 +27,7 @@ module TripIt
     # Convert a TripIt DateTime Object to a Ruby DateTime Object
     def convertDT(tpitDT)
       return nil if tpitDT.nil?
+      return tpitDT if tpitDT.class == DateTime || tpitDT.class == Date || tpitDT.class == Time
       date = tpitDT["date"]
       time = tpitDT["time"]
       offset = tpitDT["utc_offset"]
