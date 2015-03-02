@@ -44,11 +44,11 @@ module TripIt
     end
 
     # Convert object to (crude) XML for create (API does not seem to accept JSON)
-    def to_xml
-      if self.class.name == "TripIt::TransportSegment"
+    def to_xml(override_key=nil)
+      if override_key
+        xmlstr = "<#{override_key}>"
+      elsif self.class.name == "TripIt::TransportSegment"
         xmlstr = "<Segment>"
-      elsif self.class.name == "TripIt::TpDateTime"
-        xmlstr = ""
       else
         xmlstr = "<#{self.class.name.split("::").last}>"
       end
@@ -69,11 +69,9 @@ module TripIt
           xmlstr << value.to_xml
         elsif key=~/date_/
           if key=~/start_date_time/
-            inner = TripIt::TpDateTime.new(value).to_xml
-            xmlstr << "<StartDateTime>#{inner}</StartDateTime>"
+            xmlstr << TripIt::TpDateTime.new(value).to_xml("StartDateTime")
           elsif key=~/end_date_time/
-            inner = TripIt::TpDateTime.new(value).to_xml
-            xmlstr << "<EndDateTime>#{inner}</EndDateTime>"
+            xmlstr << TripIt::TpDateTime.new(value).to_xml("EndDateTime")
           else
             xmlstr << TripIt::TpDateTime.new(value).to_xml
           end
@@ -81,10 +79,10 @@ module TripIt
           xmlstr << "<#{key[1..-1]}>#{value}</#{key[1..-1]}>"
         end
       end
-      if self.class.name == "TripIt::TransportSegment"
+      if override_key
+        xmlstr << "</#{override_key}>"
+      elsif self.class.name == "TripIt::TransportSegment"
         xmlstr << "</Segment>"
-      elsif self.class.name == "TripIt::TpDateTime"
-        #DO NOTHING
       else
         xmlstr << "</#{self.class.name.split("::").last}>"
       end
