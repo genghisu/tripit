@@ -45,7 +45,13 @@ module TripIt
 
     # Convert object to (crude) XML for create (API does not seem to accept JSON)
     def to_xml
-      self.class.name == "TripIt::TpDateTime" ? xmlstr = "<DateTime>" : xmlstr = "<#{self.class.name.split("::").last}>"
+      if self.class.name == "TripIt::TpDateTime"
+        xmlstr = "<DateTime>"
+      elsif self.class.name == "TripIt::TransportSegment"
+        xmlstr = "<Segment>"
+      else
+        xmlstr = "<#{self.class.name.split("::").last}>"
+      end
       self.respond_to?("sequence") ? arr = self.sequence : arr = self.instance_variables
       arr.each do |key|
         next if key == "@client" # Skip the OAuth client
@@ -67,7 +73,13 @@ module TripIt
           xmlstr << "<#{key[1..-1]}>#{value}</#{key[1..-1]}>"
         end
       end
-      self.class.name == "TripIt::TpDateTime" ? xmlstr << "</DateTime>" : xmlstr << "</#{self.class.name.split("::").last}>"
+      if self.class.name == "TripIt::TpDateTime"
+        xmlstr = "</DateTime>"
+      elsif self.class.name == "TripIt::TransportSegment"
+        xmlstr = "</Segment>"
+      else
+        xmlstr = "</#{self.class.name.split("::").last}>"
+      end
     end
     
     def to_json
