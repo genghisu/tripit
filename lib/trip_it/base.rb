@@ -45,9 +45,7 @@ module TripIt
 
     # Convert object to (crude) XML for create (API does not seem to accept JSON)
     def to_xml
-      if self.class.name == "TripIt::TpDateTime"
-        xmlstr = "<DateTime>"
-      elsif self.class.name == "TripIt::TransportSegment"
+      if self.class.name == "TripIt::TransportSegment"
         xmlstr = "<Segment>"
       else
         xmlstr = "<#{self.class.name.split("::").last}>"
@@ -73,9 +71,7 @@ module TripIt
           xmlstr << "<#{key[1..-1]}>#{value}</#{key[1..-1]}>"
         end
       end
-      if self.class.name == "TripIt::TpDateTime"
-        xmlstr << "</DateTime>"
-      elsif self.class.name == "TripIt::TransportSegment"
+      if self.class.name == "TripIt::TransportSegment"
         xmlstr << "</Segment>"
       else
         xmlstr << "</#{self.class.name.split("::").last}>"
