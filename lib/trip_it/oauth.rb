@@ -3,8 +3,8 @@ module TripIt
     attr_reader :consumer, :access_token
     exceptions :bad_request_exception, :unauthorized_exception, :not_found_exception, :server_error, :forbidden_exception, :service_unavailable_error
     
-    def initialize(ctoken, csecret)
-      @consumer = ::OAuth::Consumer.new(ctoken, csecret, :site => 'https://api.tripit.com')
+    def initialize(ctoken, csecret, site)
+      @consumer = ::OAuth::Consumer.new(ctoken, csecret, :site => site)
     end
     
     def set_callback_url(url)
